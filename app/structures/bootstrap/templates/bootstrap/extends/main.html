@@ -4,56 +4,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block _title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('bootstrap.static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('bootstrap.static', filename='css/bootstrap-reboot.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('bootstrap.static', filename='css/custom.css') }}">
-    <script src="{{ url_for('bootstrap.static', filename='js/jquery-3.6.0.min.js') }}"></script>
     {% block _head %}
     {% endblock %}
 </head>
 <body>
 {% block _global %}
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="jumbotron my-auto window">
-            <div class="p-1 m-3">
-                <img class="float-start" src="{{ url_for('static', filename='ioDisplayLogo-wh-bg.png') }}" alt="ioDisplay Logo">
-                <img class="float-end" src="{{ url_for('static', filename='header_logo.png') }}" alt="ioDisplay Logo">
-                <div class="clearfix">&nbsp;</div>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="jumbotron my-auto window">
+        <div class="p-1 m-3">
+            <img class="float-start" src="{{ url_for('static', filename='ioDisplayLogo-wh-bg.png') }}"
+                 alt="ioDisplay Logo">
+            <img class="float-end" src="{{ url_for('static', filename='header_logo.png') }}" alt="ioDisplay Logo">
+            <div class="clearfix">&nbsp;</div>
+        </div>
+        <div class="rounded-3 bg-light p-1 m-3">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-secondary m-2" role="alert" id="flash"
+                 style="display: none;">
+                <div class="row">
+                    <div class="col-10">
+                        {% for message in messages %}
+                        <span>{{ message }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="col-2" onclick="document.getElementById('flash').remove()">
+                        <button type="button" class="btn btn-close float-end"></button>
+                    </div>
+                </div>
             </div>
-            <div class="rounded-3 bg-light p-1 m-3">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <div class="alert alert-secondary m-2" role="alert" id="flash"
-                             style="display: none;">
-                            <div class="row">
-                                <div class="col-10">
-                                    {% for message in messages %}
-                                        <span>{{ message }}</span>
-                                    {% endfor %}
-                                </div>
-                                <div class="col-2" onclick="document.getElementById('flash').remove()">
-                                    <button type="button" class="btn btn-close float-end"></button>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endwith %}
-                {% block _container %}
-                {% endblock %}
-            </div>
+            {% endif %}
+            {% endwith %}
+            {% block _container %}
+            {% endblock %}
         </div>
     </div>
+</div>
 {% endblock %}
 {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#flash").slideDown();
-            })
-        </script>
-    {% endif %}
+{% if messages %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#flash").slideDown();
+    })
+</script>
+{% endif %}
 {% endwith %}
-<script src="{{ url_for('bootstrap.static', filename='js/bootstrap.bundle.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
 <script src="{{ url_for('bootstrap.static', filename='js/main.js') }}"></script>
 </body>
 </html>
