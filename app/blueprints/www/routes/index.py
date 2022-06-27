@@ -7,7 +7,7 @@ from .. import structure
 
 @bp.route("/", methods=["GET"])
 def index():
-    render = "renders/structure-example.html"
+    render = "renders/index.html"
     extend = structures.extend("main.html", structure)
 
     return render_template(render, extend=extend)

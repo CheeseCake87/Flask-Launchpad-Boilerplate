@@ -4,10 +4,9 @@ from flask_launchpad import FLBlueprint
 
 fl_bp = FLBlueprint()
 bp = fl_bp.register()
+structure = fl_bp.config['settings']["structure"]
 
 fl_bp.import_routes("routes")
-
-structure = fl_bp.config["structure"]
 
 
 @bp.before_app_first_request
