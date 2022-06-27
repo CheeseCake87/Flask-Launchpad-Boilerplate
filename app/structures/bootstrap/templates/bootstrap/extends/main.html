@@ -14,12 +14,6 @@
 {% block _global %}
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="jumbotron my-auto window">
-        <div class="p-1 m-3">
-            <img class="float-start" src="{{ url_for('static', filename='ioDisplayLogo-wh-bg.png') }}"
-                 alt="ioDisplay Logo">
-            <img class="float-end" src="{{ url_for('static', filename='header_logo.png') }}" alt="ioDisplay Logo">
-            <div class="clearfix">&nbsp;</div>
-        </div>
         <div class="rounded-3 bg-light p-1 m-3">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
