@@ -1,0 +1,53 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #2c3034;
+    height: 100%;
+}
+
+.window {
+    width: 75%;
+}
+
+.notice {
+    width: 50%;
+}
+
+.inner {
+    min-height: 200px;
+}
+
+.media_selected {
+    border-color: #0a53be;
+    border-width: thick;
+}
+
+@media (max-width: 900px) {
+    .window {
+        width: 80%;
+    }
+
+    .notice {
+        width: 70%;
+    }
+}
+
+@media (max-width: 800px) {
+    .hide-sm {
+        display: none !important;
+    }
+    .notice {
+        width: 80%;
+    }
+}
+
+@media (max-width: 600px) {
+    .window {
+        width: 90%;
+    }
+    .notice {
+        width: 90%;
+    }
+}

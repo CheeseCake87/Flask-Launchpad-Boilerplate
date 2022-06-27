@@ -1,0 +1,18 @@
+[init]
+enabled = false
+version = 1.0
+
+[settings]
+type = "api"
+
+[blueprint]
+url_prefix = "/v1"
+
+[http_auth]
+enabled = false
+http_user = "httpuser"
+http_pass = "httppass"
+
+[public_key]
+enabled = false
+public_key = "null"

@@ -1,0 +1,20 @@
+[init]
+enabled = true
+version = 0.1
+
+[settings]
+type = "blueprint"
+structure = "bootstrap"
+
+[blueprint]
+name = "www"
+url_prefix = "/"
+template_folder = "templates"
+static_folder = "static"
+static_url_path = "/www/static"
+
+[session]
+var_in_session = "this can be loaded using fl_bp.session"
+permissions = ["this", "that"]
+logged_in = true
+not_logged_in = false
