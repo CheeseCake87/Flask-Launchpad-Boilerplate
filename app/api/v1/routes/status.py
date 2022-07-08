@@ -10,5 +10,4 @@ class Test(Resource):
         return "GET Method"
 
     def post(self, public_key):
-        public_key_required(public_key)
         return """POST Method"""
