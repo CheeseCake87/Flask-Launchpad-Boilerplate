@@ -9,5 +9,4 @@ from .. import structure
 def index():
     render = "renders/index.html"
     extend = structures.extend("main.html", structure)
-
     return render_template(render, extend=extend)

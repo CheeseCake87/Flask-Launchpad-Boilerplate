@@ -6,23 +6,13 @@ from flask import session
 
 @current_app.before_first_request
 def before_first_request():
-    pass
-
-
-@current_app.before_request
-def before_request():
     if "version" not in session:
         session["version"] = current_app.config["VERSION"]
 
 
-@current_app.after_request
-def after_request(response):
-    return response
-
-
 @current_app.errorhandler(404)
 def request_404(error):
-    return Response("Page Not Found.", 404)
+    return Response(f"{error}")
 
 
 @current_app.errorhandler(401)
@@ -37,3 +27,8 @@ def redirect_catch_all():
     if "tried" in request.args:
         endpoint_tried += f"{request.args['tried']}"
     return Response(endpoint_tried)
+
+
+@current_app.route("/system", methods=["GET"])
+def index():
+    return """System Route"""

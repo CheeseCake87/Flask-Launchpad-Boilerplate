@@ -13,7 +13,7 @@ static_folder = "flask/static"
 template_folder = "flask/templates"
 error_404_help = true
 SQLALCHEMY_TRACK_MODIFICATIONS = false
-EXPLAIN_TEMPLATE_LOADING = true
+EXPLAIN_TEMPLATE_LOADING = false
 
 # [database.main] is loaded as SQLALCHEMY_DATABASE_URI
 # type = mysql / postgresql / sqlite
