@@ -4,9 +4,10 @@ from markupsafe import Markup
 class BootstrapForms:
     _all = {}
 
-    def __init__(self):
+    def __init__(self, clear=True):
         _version = "0.1"
-        self.clear()
+        if clear:
+            self.clear()
 
     def all(self) -> dict:
         if self._all == {}:
@@ -33,10 +34,13 @@ class BootstrapForms:
             self._all.update(tack)
             return
 
+    def join(self, join_dict):
+        self._all.update(join_dict)
+
     def remove(self, name) -> None:
         self._all.pop(name)
 
-    def update(self, name, element) -> None:
+    def update_element(self, name, element) -> None:
         self._all[name] = element
 
     def clear(self) -> None:
@@ -74,9 +78,37 @@ class BootstrapForms:
     def append_label_func(self, constructor: list, label: str) -> list:
         if '<div class="input-group">' not in constructor:
             constructor = self.apply_input_group(constructor)
+
+        if '</div>' in constructor[-1:]:
+            constructor.insert(len(constructor) - 1, f'<div class="input-group-append">')
+            constructor.insert(len(constructor) - 1,
+                               f'<span class="input-group-text" id="inputGroup-sizing-default">{label}</span>')
+            constructor.insert(len(constructor) - 1, f'</div>')
+            return constructor
+
         constructor.append(f'<div class="input-group-append">')
         constructor.append(
             f'<span class="input-group-text" id="inputGroup-sizing-default">{label}</span>')
+        constructor.append(f'</div>')
+        return constructor
+
+    def append_text_func(self, constructor: list, text: str, css: str = "") -> list:
+        if css != "":
+            css = f" {css}"
+        if '<div class="input-group">' not in constructor:
+            print("fired")
+            constructor = self.apply_input_group(constructor)
+        print(constructor[-1:])
+        if '</div>' in constructor[-1:]:
+            constructor.insert(len(constructor) - 1, f'<div class="input-group-append">')
+            constructor.insert(len(constructor) - 1,
+                               f'<span class="input-group-text" id="inputGroup-sizing-default">{text}</span>')
+            constructor.insert(len(constructor) - 1, f'</div>')
+            return constructor
+
+        constructor.append(f'<div class="input-group-append">')
+        constructor.append(
+            f'<span class="input-group-text{css}" id="inputGroup-sizing-default">{text}</span>')
         constructor.append(f'</div>')
         return constructor
 
@@ -113,6 +145,7 @@ class BootstrapForms:
     def switch(self,
                name: str = ":null:",
                label: str = "",
+               label_class: str = "",
                input_class: str = "",
                onclick: str = "",
                wrap_class: str = None,
@@ -120,11 +153,12 @@ class BootstrapForms:
                checked: bool = False,
                disabled: bool = False,
                required: bool = False,
+               readonly: bool = False,
                ) -> Markup:
 
         construction = ['<div class="form-check form-switch">', '<input class="form-check-input']
         if input_class != "":
-            construction.append(f'{input_class}')
+            construction.append(f' {input_class}')
         construction.append(f'" type="checkbox" name="{name}" id="{name}"')
         if onclick != "":
             construction.append(f' onclick="{onclick}"')
@@ -134,10 +168,14 @@ class BootstrapForms:
             construction.append(' disabled')
         if required:
             construction.append(' required')
+        if readonly:
+            construction.append(' readonly')
         construction.append('>')
         if label != "":
+            if label_class != "":
+                label_class = f" {label_class}"
             construction.append(
-                f'<label class="form-check-label" for="{name}">{label}</label>'
+                f'<label class="form-check-label{label_class}" for="{name}">{label}</label>'
             )
         construction.append('</div>')
         final = self.wrap_element(construction, wrap_class, wrap_inner_class)
@@ -202,6 +240,8 @@ class BootstrapForms:
               append_label: str = "",
               prepend_button: str = "",
               append_button: str = "",
+              append_text: str = "",
+              append_text_css: str = "",
               placeholder: str = "",
               input_type: str = "text",
               input_class: str = "",
@@ -214,6 +254,7 @@ class BootstrapForms:
               multiple: bool = False,
               autofocus: bool = False,
               value: str = None,
+              mobile_picture: bool = False
               ) -> Markup:
 
         _name = self.no_space(name)
@@ -240,6 +281,9 @@ class BootstrapForms:
         if placeholder != "":
             construction.append(f'placeholder="{placeholder}" ')
 
+        if mobile_picture:
+            construction.append(f'capture="environment" ')
+
         if required:
             construction.append('required ')
 
@@ -257,6 +301,9 @@ class BootstrapForms:
 
         construction.append("/>")
 
+        if mobile_picture:
+            construction.append("")
+
         if prepend_label != "" and prepend_button != "":
             return Markup("<p>Not able to prepend both a label and a button</p>")
 
@@ -268,6 +315,9 @@ class BootstrapForms:
 
         if append_label != "":
             construction = self.append_label_func(construction, prepend_label)
+
+        if append_text != "":
+            construction = self.append_text_func(construction, append_text, append_text_css)
 
         if prepend_button != "":
             construction = self.prepend_button_func(construction, prepend_button)
@@ -288,6 +338,8 @@ class BootstrapForms:
                append_label: str = "",
                prepend_button: str = "",
                append_button: str = "",
+               append_text: str = "",
+               append_text_css: str = "",
                input_class: str = "",
                wrap_class: str = None,
                wrap_inner_class: str = None,
@@ -328,10 +380,16 @@ class BootstrapForms:
 
         if values_list:
             for value in values_list:
+                if value == selected:
+                    construction.append(f'<option value="{value}" selected>{value}</option>')
+                    continue
                 construction.append(f'<option value="{value}">{value}</option>')
 
         if values_dict:
             for key, value in values_dict.items():
+                if value == selected:
+                    construction.append(f'<option value="{value}" selected>{key}</option>')
+                    continue
                 construction.append(f'<option value="{value}">{key}</option>')
 
         if values_group_dict:
@@ -339,7 +397,7 @@ class BootstrapForms:
                 construction.append(f'<optgroup label="{group}">')
                 for key, value in group_dict.items():
                     if value == selected:
-                        construction.append(f'<option value="{value}">{key}</option>')
+                        construction.append(f'<option value="{value}" selected>{key}</option>')
                     construction.append(f'<option value="{value}">{key}</option>')
                 construction.append('</optgroup>')
 
@@ -350,6 +408,9 @@ class BootstrapForms:
 
         if append_label != "":
             construction = self.append_label_func(construction, prepend_label)
+
+        if append_text != "":
+            construction = self.append_text_func(construction, append_text, append_text_css)
 
         if prepend_button != "":
             construction = self.prepend_button_func(construction, prepend_button)
