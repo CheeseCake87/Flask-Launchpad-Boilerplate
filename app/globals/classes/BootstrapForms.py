@@ -15,22 +15,22 @@ class BootstrapForms:
         return self._all
 
     def add(self, name: str, element: Markup = None, element_list: list = None) -> None:
-        null_marker = ":null:"
+        _null_marker = ":null:"
         if element is not None:
-            if null_marker in element:
-                element = element.replace(null_marker, name)
+            if _null_marker in element:
+                element = element.replace(_null_marker, name)
             tack = {name: element}
             self._all.update(tack)
             return
 
         if element_list is not None:
-            unpack_list = []
+            _unpack_list = []
             for index, element in enumerate(element_list):
-                if null_marker in element:
-                    unpack_list.append(element.replace(null_marker, f"{name}_{index}"))
+                if _null_marker in element:
+                    _unpack_list.append(element.replace(_null_marker, f"{name}_{index}"))
                 else:
-                    unpack_list.append(element)
-            tack = {name: unpack_list}
+                    _unpack_list.append(element)
+            tack = {name: _unpack_list}
             self._all.update(tack)
             return
 
@@ -52,88 +52,88 @@ class BootstrapForms:
     def title(self, string: str) -> str:
         return string.title()
 
-    def wrap_element(self, constructor: list, wrap_class: str = None, wrap_inner_class: str = None) -> list:
+    def wrap_element(self, _constructor: list, wrap_class: str = None, wrap_inner_class: str = None) -> list:
         if wrap_inner_class is not None:
-            constructor.insert(0, f'<div class="{wrap_inner_class}">')
-            constructor.append("</div>")
+            _constructor.insert(0, f'<div class="{wrap_inner_class}">')
+            _constructor.append("</div>")
         if wrap_class is not None:
-            constructor.insert(0, f'<div class="{wrap_class}">')
-            constructor.append("</div>")
-        return constructor
+            _constructor.insert(0, f'<div class="{wrap_class}">')
+            _constructor.append("</div>")
+        return _constructor
 
-    def apply_input_group(self, constructor) -> list:
-        constructor.insert(0, '<div class="input-group">')
-        constructor.append('</div>')
-        return constructor
+    def apply_input_group(self, _constructor) -> list:
+        _constructor.insert(0, '<div class="input-group">')
+        _constructor.append('</div>')
+        return _constructor
 
-    def prepend_label_func(self, constructor: list, label: str) -> list:
-        if '<div class="input-group">' not in constructor:
-            constructor = self.apply_input_group(constructor)
-        constructor.insert(1, f'</div>')
-        constructor.insert(1,
+    def prepend_label_func(self, _constructor: list, label: str) -> list:
+        if '<div class="input-group">' not in _constructor:
+            _constructor = self.apply_input_group(_constructor)
+        _constructor.insert(1, f'</div>')
+        _constructor.insert(1,
                            f'<span class="input-group-text" id="inputGroup-sizing-default">{label}</span>')
-        constructor.insert(1, f'<div class="input-group-prepend">')
-        return constructor
+        _constructor.insert(1, f'<div class="input-group-prepend">')
+        return _constructor
 
-    def append_label_func(self, constructor: list, label: str) -> list:
-        if '<div class="input-group">' not in constructor:
-            constructor = self.apply_input_group(constructor)
+    def append_label_func(self, _constructor: list, label: str) -> list:
+        if '<div class="input-group">' not in _constructor:
+            _constructor = self.apply_input_group(_constructor)
 
-        if '</div>' in constructor[-1:]:
-            constructor.insert(len(constructor) - 1, f'<div class="input-group-append">')
-            constructor.insert(len(constructor) - 1,
+        if '</div>' in _constructor[-1:]:
+            _constructor.insert(len(_constructor) - 1, f'<div class="input-group-append">')
+            _constructor.insert(len(_constructor) - 1,
                                f'<span class="input-group-text" id="inputGroup-sizing-default">{label}</span>')
-            constructor.insert(len(constructor) - 1, f'</div>')
-            return constructor
+            _constructor.insert(len(_constructor) - 1, f'</div>')
+            return _constructor
 
-        constructor.append(f'<div class="input-group-append">')
-        constructor.append(
+        _constructor.append(f'<div class="input-group-append">')
+        _constructor.append(
             f'<span class="input-group-text" id="inputGroup-sizing-default">{label}</span>')
-        constructor.append(f'</div>')
-        return constructor
+        _constructor.append(f'</div>')
+        return _constructor
 
-    def append_text_func(self, constructor: list, text: str, css: str = "") -> list:
+    def append_text_func(self, _constructor: list, text: str, css: str = "") -> list:
         if css != "":
             css = f" {css}"
-        if '<div class="input-group">' not in constructor:
+        if '<div class="input-group">' not in _constructor:
             print("fired")
-            constructor = self.apply_input_group(constructor)
-        print(constructor[-1:])
-        if '</div>' in constructor[-1:]:
-            constructor.insert(len(constructor) - 1, f'<div class="input-group-append">')
-            constructor.insert(len(constructor) - 1,
+            _constructor = self.apply_input_group(_constructor)
+        print(_constructor[-1:])
+        if '</div>' in _constructor[-1:]:
+            _constructor.insert(len(_constructor) - 1, f'<div class="input-group-append">')
+            _constructor.insert(len(_constructor) - 1,
                                f'<span class="input-group-text" id="inputGroup-sizing-default">{text}</span>')
-            constructor.insert(len(constructor) - 1, f'</div>')
-            return constructor
+            _constructor.insert(len(_constructor) - 1, f'</div>')
+            return _constructor
 
-        constructor.append(f'<div class="input-group-append">')
-        constructor.append(
+        _constructor.append(f'<div class="input-group-append">')
+        _constructor.append(
             f'<span class="input-group-text{css}" id="inputGroup-sizing-default">{text}</span>')
-        constructor.append(f'</div>')
-        return constructor
+        _constructor.append(f'</div>')
+        return _constructor
 
-    def prepend_button_func(self, constructor: list, button_object: str) -> list:
-        if '<div class="input-group">' not in constructor:
-            constructor = self.apply_input_group(constructor)
-        constructor.insert(1, f'</div>')
-        constructor.insert(1, button_object)
-        constructor.insert(1, f'<div class="input-group-prepend">')
-        constructor.insert(1, f'<div class="input-group">')
-        constructor.append('</div>')
-        return constructor
+    def prepend_button_func(self, _constructor: list, button_object: str) -> list:
+        if '<div class="input-group">' not in _constructor:
+            _constructor = self.apply_input_group(_constructor)
+        _constructor.insert(1, f'</div>')
+        _constructor.insert(1, button_object)
+        _constructor.insert(1, f'<div class="input-group-prepend">')
+        _constructor.insert(1, f'<div class="input-group">')
+        _constructor.append('</div>')
+        return _constructor
 
-    def append_button_func(self, constructor: list, button_object: str) -> list:
-        if '<div class="input-group">' not in constructor:
-            constructor.append(f'<div class="input-group-append">')
-            constructor.append(button_object)
-            constructor.append(f'</div>')
-            constructor = self.apply_input_group(constructor)
-            return constructor
+    def append_button_func(self, _constructor: list, button_object: str) -> list:
+        if '<div class="input-group">' not in _constructor:
+            _constructor.append(f'<div class="input-group-append">')
+            _constructor.append(button_object)
+            _constructor.append(f'</div>')
+            _constructor = self.apply_input_group(_constructor)
+            return _constructor
 
-        constructor.insert(constructor.__len__() - 2, f'<div class="input-group-append">')
-        constructor.insert(constructor.__len__() - 2, button_object)
-        constructor.append(f'</div>')
-        return constructor
+        _constructor.insert(_constructor.__len__() - 2, f'<div class="input-group-append">')
+        _constructor.insert(_constructor.__len__() - 2, button_object)
+        _constructor.append(f'</div>')
+        return _constructor
 
     def hidden(self,
                name: str = ":null:",
@@ -156,29 +156,29 @@ class BootstrapForms:
                readonly: bool = False,
                ) -> Markup:
 
-        construction = ['<div class="form-check form-switch">', '<input class="form-check-input']
+        _construction = ['<div class="form-check form-switch">', '<input class="form-check-input']
         if input_class != "":
-            construction.append(f' {input_class}')
-        construction.append(f'" type="checkbox" name="{name}" id="{name}"')
+            _construction.append(f' {input_class}')
+        _construction.append(f'" type="checkbox" name="{name}" id="{name}"')
         if onclick != "":
-            construction.append(f' onclick="{onclick}"')
+            _construction.append(f' onclick="{onclick}"')
         if checked:
-            construction.append(' checked')
+            _construction.append(' checked')
         if disabled:
-            construction.append(' disabled')
+            _construction.append(' disabled')
         if required:
-            construction.append(' required')
+            _construction.append(' required')
         if readonly:
-            construction.append(' readonly')
-        construction.append('>')
+            _construction.append(' readonly')
+        _construction.append('>')
         if label != "":
             if label_class != "":
                 label_class = f" {label_class}"
-            construction.append(
+            _construction.append(
                 f'<label class="form-check-label{label_class}" for="{name}">{label}</label>'
             )
-        construction.append('</div>')
-        final = self.wrap_element(construction, wrap_class, wrap_inner_class)
+        _construction.append('</div>')
+        final = self.wrap_element(_construction, wrap_class, wrap_inner_class)
         return Markup("".join(final))
 
     def button(self,
@@ -199,7 +199,7 @@ class BootstrapForms:
         Default element_type: button
         """
 
-        construction = []
+        _construction = []
         valid_button_action = ["button", "submit", "reset"]
         if button_class is not None:
             if "btn " not in button_class:
@@ -208,30 +208,30 @@ class BootstrapForms:
             button_class = "btn"
 
         if element_type == "a":
-            construction.append(f'<a href="{href}" ')
-            construction.append(f'class="{button_class}')
+            _construction.append(f'<a href="{href}" ')
+            _construction.append(f'class="{button_class}')
             if target != "":
-                construction.append(f'target="{target}')
+                _construction.append(f'target="{target}')
             if disabled:
-                construction.append(' disabled')
-            construction.append(f'" role="button">{label}</a>')
-            final = self.wrap_element(construction, wrap_class)
+                _construction.append(' disabled')
+            _construction.append(f'" role="button">{label}</a>')
+            final = self.wrap_element(_construction, wrap_class)
             return Markup("".join(final))
 
         if element_type == "button":
             if button_action not in valid_button_action:
-                construction.append("<p>Not a valid button_action type</p>")
-                return Markup("".join(construction))
-            construction.append(f'<button type="{button_action}" ')
-            construction.append(f'class="{button_class}" ')
+                _construction.append("<p>Not a valid button_action type</p>")
+                return Markup("".join(_construction))
+            _construction.append(f'<button type="{button_action}" ')
+            _construction.append(f'class="{button_class}" ')
             if disabled:
-                construction.append('disabled')
-            construction.append(f'>{label}</button>')
-            final = self.wrap_element(construction, wrap_class, wrap_inner_class)
+                _construction.append('disabled')
+            _construction.append(f'>{label}</button>')
+            final = self.wrap_element(_construction, wrap_class, wrap_inner_class)
             return Markup("".join(final))
 
-        construction.append("<p>Not a valid element type</p>")
-        return Markup("".join(construction))
+        _construction.append("<p>Not a valid element type</p>")
+        return Markup("".join(_construction))
 
     def input(self,
               name: str = ":null:",
@@ -260,7 +260,7 @@ class BootstrapForms:
         _name = self.no_space(name)
         _label = self.title(label)
 
-        construction = [
+        _construction = [
             f'<input ',
             f'type="{input_type}" ',
             f'name="{_name}" ',
@@ -268,41 +268,41 @@ class BootstrapForms:
         ]
 
         if input_class != "":
-            construction.append(f' {input_class}')
+            _construction.append(f' {input_class}')
 
-        construction.append(f'" id="{_name}', )
+        _construction.append(f'" id="{_name}', )
         if input_id != "":
-            construction.append(f' {input_id}')
-        construction.append(f'"')
+            _construction.append(f' {input_id}')
+        _construction.append(f'"')
 
         if value:
-            construction.append(f'value="{value}" ')
+            _construction.append(f'value="{value}" ')
 
         if placeholder != "":
-            construction.append(f'placeholder="{placeholder}" ')
+            _construction.append(f'placeholder="{placeholder}" ')
 
         if mobile_picture:
-            construction.append(f'capture="environment" ')
+            _construction.append(f'capture="environment" ')
 
         if required:
-            construction.append('required ')
+            _construction.append('required ')
 
         if readonly:
-            construction.append('readonly ')
+            _construction.append('readonly ')
 
         if disabled:
-            construction.append('disabled ')
+            _construction.append('disabled ')
 
         if multiple:
-            construction.append('multiple ')
+            _construction.append('multiple ')
 
         if autofocus:
-            construction.append('autofocus ')
+            _construction.append('autofocus ')
 
-        construction.append("/>")
+        _construction.append("/>")
 
         if mobile_picture:
-            construction.append("")
+            _construction.append("")
 
         if prepend_label != "" and prepend_button != "":
             return Markup("<p>Not able to prepend both a label and a button</p>")
@@ -311,24 +311,24 @@ class BootstrapForms:
             return Markup("<p>Not able to append both a label and a button</p>")
 
         if prepend_label != "":
-            construction = self.prepend_label_func(construction, prepend_label)
+            _construction = self.prepend_label_func(_construction, prepend_label)
 
         if append_label != "":
-            construction = self.append_label_func(construction, prepend_label)
+            _construction = self.append_label_func(_construction, prepend_label)
 
         if append_text != "":
-            construction = self.append_text_func(construction, append_text, append_text_css)
+            _construction = self.append_text_func(_construction, append_text, append_text_css)
 
         if prepend_button != "":
-            construction = self.prepend_button_func(construction, prepend_button)
+            _construction = self.prepend_button_func(_construction, prepend_button)
 
         if append_button != "":
-            construction = self.append_button_func(construction, append_button)
+            _construction = self.append_button_func(_construction, append_button)
 
         if label != "":
-            construction.insert(0, f'<label for="{_name}" class="mb-2">{_label}</label>')
+            _construction.insert(0, f'<label for="{_name}" class="mb-2">{_label}</label>')
 
-        final = self.wrap_element(construction, wrap_class, wrap_inner_class)
+        final = self.wrap_element(_construction, wrap_class, wrap_inner_class)
         return Markup("".join(final))
 
     def select(self,
@@ -356,7 +356,7 @@ class BootstrapForms:
         _name = self.no_space(name)
         _label = self.title(label)
 
-        construction = [
+        _construction = [
             '<select ',
             f'name="{_name}" ',
             f'id="{_name}" ',
@@ -365,61 +365,61 @@ class BootstrapForms:
         ]
 
         if required:
-            construction.append(" required")
+            _construction.append(" required")
 
         if readonly:
-            construction.append(" readonly")
+            _construction.append(" readonly")
 
         if disabled:
-            construction.append(" disabled")
+            _construction.append(" disabled")
 
         if multiple:
-            construction.append(" multiple")
+            _construction.append(" multiple")
 
-        construction.append(">")
+        _construction.append(">")
 
         if values_list:
             for value in values_list:
                 if value == selected:
-                    construction.append(f'<option value="{value}" selected>{value}</option>')
+                    _construction.append(f'<option value="{value}" selected>{value}</option>')
                     continue
-                construction.append(f'<option value="{value}">{value}</option>')
+                _construction.append(f'<option value="{value}">{value}</option>')
 
         if values_dict:
             for key, value in values_dict.items():
                 if value == selected:
-                    construction.append(f'<option value="{value}" selected>{key}</option>')
+                    _construction.append(f'<option value="{value}" selected>{key}</option>')
                     continue
-                construction.append(f'<option value="{value}">{key}</option>')
+                _construction.append(f'<option value="{value}">{key}</option>')
 
         if values_group_dict:
             for group, group_dict in values_group_dict.items():
-                construction.append(f'<optgroup label="{group}">')
+                _construction.append(f'<optgroup label="{group}">')
                 for key, value in group_dict.items():
                     if value == selected:
-                        construction.append(f'<option value="{value}" selected>{key}</option>')
-                    construction.append(f'<option value="{value}">{key}</option>')
-                construction.append('</optgroup>')
+                        _construction.append(f'<option value="{value}" selected>{key}</option>')
+                    _construction.append(f'<option value="{value}">{key}</option>')
+                _construction.append('</optgroup>')
 
-        construction.append('</select>')
+        _construction.append('</select>')
 
         if prepend_label != "":
-            construction = self.prepend_label_func(construction, prepend_label)
+            _construction = self.prepend_label_func(_construction, prepend_label)
 
         if append_label != "":
-            construction = self.append_label_func(construction, prepend_label)
+            _construction = self.append_label_func(_construction, prepend_label)
 
         if append_text != "":
-            construction = self.append_text_func(construction, append_text, append_text_css)
+            _construction = self.append_text_func(_construction, append_text, append_text_css)
 
         if prepend_button != "":
-            construction = self.prepend_button_func(construction, prepend_button)
+            _construction = self.prepend_button_func(_construction, prepend_button)
 
         if append_button != "":
-            construction = self.append_button_func(construction, append_button)
+            _construction = self.append_button_func(_construction, append_button)
 
         if label != "":
-            construction.insert(0, f'<label for="{_name}" class="mb-2">{_label}</label>')
+            _construction.insert(0, f'<label for="{_name}" class="mb-2">{_label}</label>')
 
-        final = self.wrap_element(construction, wrap_class, wrap_inner_class)
+        final = self.wrap_element(_construction, wrap_class, wrap_inner_class)
         return Markup("".join(final))
